@@ -1,85 +1,65 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BrokerImpl extends UnicastRemoteObject implements Broker {
-    private Map<String, String> serversMap = new HashMap<String, String>();
-    private Map<String, List<Method>> servicesMap = new HashMap<String, List<Method>>();
+    private final Map<String, String> serversMap = new HashMap<>();
+    private final List<Service> servicesList;
 
     public BrokerImpl() throws RemoteException {
         super(); // Call UnicastRemoteObject constructor
+        this.servicesList = new ArrayList<>();
     }
 
-    /**
-     * @param serverName Name of the server to register
-     * @param remoteHost     Address of the server to register
-     * @throws RemoteException
-     */
     @Override
     public void registerServer(String serverName, String remoteHost) throws RemoteException {
         serversMap.put(serverName, remoteHost);
     }
 
-    /**
-     * @param serverName       Name of the service to execute
-     * @param methodParameters Parameters of the service to execute
-     * @return
-     * @throws RemoteException
-     */
     @Override
-    public String executeMethod(String serverName, String[] methodParameters) throws RemoteException {
-        // TODO: Implement this method
+    public Object executeService(String serviceName, List<Object> serviceParameters) throws RemoteException {
+        Service service = findByName(this.servicesList, serviceName);
+        String serverName = service.getServerName();
+        String serverAddress = serversMap.get(serverName);
+        // Execute service
+        try { // https://stackoverflow.com/questions/160970/how-do-i-invoke-a-java-method-when-given-the-method-name-as-a-string
+            Object server = Naming.lookup("//" + serverAddress + serverName); // Get the remote object
+            java.lang.reflect.Method method;
+            method = server.getClass().getMethod(serviceName); // Find method
+            return method.invoke(server); // TODO: How to call this method with args?
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
         return null;
     }
 
-    /**
-     * @param serverName       Name of the server
-     * @param methodName       Name of the service
-     * @param methodParameters Parameters of the service
-     * @param returnType       Return type
-     */
     @Override
-    public void registerMethod(String serverName, String methodName, String[] methodParameters, String returnType) {
-        // Get list of services from serverName
-        List<Method> services = this.servicesMap.get(serverName);
-        // Add new service
-        Method service = new Method(methodName, methodParameters, returnType);
-        services.add(service);
-        // Add updated list to servicesMap
-        servicesMap.put(methodName, services);
+    public void registerService(String serverName, String serviceName, List<Object> serviceParameters, String returnType) throws RemoteException {
+        // Create new service
+        Service service = new Service(serviceName, serviceParameters, returnType, serverName);
+        // Add new service to list of services
+        this.servicesList.add(service);
     }
 
-    /**
-     * @param serverName Name of the server
-     * @param methodName Name of the service
-     */
     @Override
-    public void terminateMethod(String serverName, String methodName) {
-        // Get list of services from serverName
-        List<Method> services = this.servicesMap.get(serverName);
+    public void terminateService(String serverName, String serviceName) throws RemoteException {
         // Delete service
-        services.remove(findByName(services, methodName));
-        // Add updated list to servicesMap
-        servicesMap.put(methodName, services);
+        this.servicesList.remove(findByName(this.servicesList, serviceName));
     }
 
-    /**
-     * @return List of available methods
-     */
     @Override
-    public List<Method> methodsList() {
-        List<Method> methodsList = null;
-        // Concat all lists with methods
-        // Iterate over the hashmap getting the lists
-        for (List<Method> value : servicesMap.values()) {
-            Stream.concat(methodsList.stream(), value.stream()).collect(Collectors.toList());
-        }
-        return methodsList;
+    public List<Service> servicesList() throws RemoteException {
+        return this.servicesList;
+    }
+
+    // AUXILIARY METHODS
+    private static Service findByName(List<Service> methodsList, String methodName){
+        return methodsList.stream().filter(service -> methodName.equals(service.getServiceName())).findFirst().orElse(null);
     }
 
     public static void main(String[] args) {
@@ -96,12 +76,7 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
             System.out.println("Remote object successfully registered");
         }
         catch(Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
-    }
-
-    // AUXILIARY METHODS
-    private static Method findByName(List<Method> methodsList, String methodName){
-        return methodsList.stream().filter(method -> methodName.equals(method.getMethodName())).findFirst().orElse(null);
     }
 }

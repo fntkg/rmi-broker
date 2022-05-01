@@ -4,7 +4,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Calendar;
 
 public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetriever {
-    String[] WEEK_DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sundar"};
+    String[] WEEK_DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     public DateRetrieverImpl() throws RemoteException {
         super(); // Call UnicastRemoteObject constructor
@@ -29,11 +29,11 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             System.out.println("Remote object successfully registered");
 
             // Register services
-            Broker broker = (Broker) Naming.lookup("//" + hostName + "757024Broker");
-            broker.registerMethod("ServerA", "getDate", new String[0], "String");
+            Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
+            broker.registerService("/757024DateRetriever", "getDate", null, "String");
         }
         catch(Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 }

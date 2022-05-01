@@ -4,36 +4,13 @@ import java.util.List;
 
 public interface Broker extends Remote {
 
-    /**
-     * @param serverName Name of the server to register
-     * @param remoteHost Address of the server to register
-     */
     void registerServer(String serverName, String remoteHost) throws RemoteException;
 
-    /**
-     * @param serverName Name of the service to execute
-     * @param methodParameters Parameters of the service to execute
-     * @return
-     */
-    String executeMethod(String serverName, String[] methodParameters) throws RemoteException;
+    Object executeService(String serviceName, List<Object> serviceParameters) throws RemoteException;
 
-    /**
-     * @param serverName Name of the server
-     * @param methodName Name of the service
-     * @param methodParameters Parameters of the service
-     * @param returnType Return type
-     */
-    void registerMethod(String serverName, String methodName, String[] methodParameters, String returnType);
+    void registerService(String serverName, String serviceName, List<Object> serviceParameters, String returnType) throws RemoteException;
 
-    /**
-     * @param serverName Name of the server
-     * @param methodName Name of the service
-     */
-    void terminateMethod(String serverName, String methodName);
+    void terminateService(String serverName, String serviceName) throws RemoteException;
 
-
-    /**
-     * @return List of available methods
-     */
-    List<Method> methodsList();
+    List<Service> servicesList() throws RemoteException;
 }
