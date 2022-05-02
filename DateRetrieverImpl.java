@@ -28,8 +28,9 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             Naming.rebind("//" + hostName + "/757024DateRetriever", obj);
             System.out.println("Remote object successfully registered");
 
-            // Register services
+            // Register server and services
             Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
+            broker.registerServer("/757024DateRetriever", "127.0.0.1");
             broker.registerService("/757024DateRetriever", "getDate", null, "String");
         }
         catch(Exception ex) {

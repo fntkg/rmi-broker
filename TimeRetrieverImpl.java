@@ -28,6 +28,7 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
 
             // Register services
             Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
+            broker.registerServer("/757024TimeRetriever", "127.0.0.1");
             broker.registerService("/757024TimeRetriever", "getHour", null, "String");
         }
         catch(Exception ex) {
