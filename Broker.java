@@ -12,5 +12,5 @@ public interface Broker extends Remote {
 
     void terminateService(String serverName, String serviceName) throws RemoteException;
 
-    List<Service> servicesList() throws RemoteException;
+    List<Service> listServices() throws RemoteException;
 }

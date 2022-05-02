@@ -8,7 +8,7 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
         super(); // Call UnicastRemoteObject constructor
     }
 
-    public String getHour() throws RemoteException {
+    public String getTime() throws RemoteException {
         Calendar c = Calendar.getInstance();
         return String.valueOf(c.get(Calendar.HOUR_OF_DAY)) + ':' + c.get(Calendar.MINUTE);
     }

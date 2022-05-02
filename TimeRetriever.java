@@ -6,5 +6,5 @@ public interface TimeRetriever extends Remote {
      * @return Actual time
      * @throws RemoteException
      */
-    String getHour() throws RemoteException;
+    String getTime() throws RemoteException;
 }

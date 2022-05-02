@@ -53,7 +53,7 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
     }
 
     @Override
-    public List<Service> servicesList() throws RemoteException {
+    public List<Service> listServices() throws RemoteException {
         return this.servicesList;
     }
 
