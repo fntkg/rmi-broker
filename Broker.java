@@ -1,6 +1,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 public interface Broker extends Remote {
 
@@ -8,7 +9,7 @@ public interface Broker extends Remote {
 
     Object executeService(String serviceName, List<Object> serviceParameters) throws RemoteException;
 
-    void registerService(String serverName, String serviceName, List<Object> serviceParameters, String returnType) throws RemoteException;
+    void registerService(String serverName, String serviceName, Map<String, String> serviceParameters, String returnType) throws RemoteException;
 
     void terminateService(String serverName, String serviceName) throws RemoteException;
 

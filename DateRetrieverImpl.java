@@ -20,6 +20,10 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
         return "Today is: " + WEEK_DAYS[c.get(Calendar.DAY_OF_WEEK)];
     }
 
+    public String getDateWithArgs(String name, int age) throws RemoteException {
+        return "Hi " + name + ", I am DateRetriever";
+    }
+
     public static void main(String[] args) {
         // Set the directory where the java.policy is located
         // The second argument is the path to the java.policy

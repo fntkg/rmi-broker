@@ -1,4 +1,5 @@
 import java.rmi.Naming;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientC {
@@ -44,7 +45,7 @@ public class ClientC {
                 }
                 else {
                     System.out.println("[+] Answer from server:");
-                    System.out.println(server.executeService(service.getServiceName(), null));
+                    System.out.println(server.executeService(service.getServiceName(), new ArrayList<>())); // TODO Y si no se puede imprimir?
                     System.out.println("\n");
                 }
             }

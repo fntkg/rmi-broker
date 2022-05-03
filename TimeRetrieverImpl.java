@@ -1,7 +1,9 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetriever {
     public TimeRetrieverImpl() throws RemoteException {
@@ -11,6 +13,10 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
     public String getTime() throws RemoteException {
         Calendar c = Calendar.getInstance();
         return String.valueOf(c.get(Calendar.HOUR_OF_DAY)) + ':' + c.get(Calendar.MINUTE);
+    }
+
+    public String getTimeWithArgs(String name, int age, int weight) throws RemoteException {
+        return "Hi " + name + ", I am TimeRetriever.";
     }
 
     public static void main(String[] args) {
@@ -39,6 +45,9 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
             System.out.println("[+] Server registered on broker");
             broker.registerService("/757024TimeRetriever", "getTime", null, "String");
             System.out.println("[+] Services registered on broker");
+            List<String> parameters = new ArrayList<>();
+            parameters.add("name"); parameters.add("age"); parameters.add("weight"); // TODO create map of parameters
+            broker.registerService("/757024TimeRetriever", "getTimeWithArgs", parameters, "String");
         }
         catch(Exception ex) {
             ex.printStackTrace();

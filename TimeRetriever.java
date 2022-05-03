@@ -7,4 +7,6 @@ public interface TimeRetriever extends Remote {
      * @throws RemoteException
      */
     String getTime() throws RemoteException;
+
+    String getTimeWithArgs(String name, int age, int weight) throws RemoteException;
 }

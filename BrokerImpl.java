@@ -29,7 +29,9 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
             Object server = Naming.lookup("//" + serverAddress + serverName); // Get the remote object
             java.lang.reflect.Method method;
             method = server.getClass().getMethod(serviceName);
-            return method.invoke(server); // TODO: How to call this method with args?
+            // Transform serviceParameters to an array. Using a list for comfort
+            Object[] arguments = serviceParameters.toArray();
+            return method.invoke(server, arguments);
         }
         catch(Exception ex) {
             ex.printStackTrace();
@@ -38,7 +40,7 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
     }
 
     @Override
-    public void registerService(String serverName, String serviceName, List<Object> serviceParameters, String returnType) throws RemoteException {
+    public void registerService(String serverName, String serviceName, Map<String, String> serviceParameters, String returnType) throws RemoteException {
         // Create new service
         Service service = new Service(serviceName, serviceParameters, returnType, serverName);
         // Add new service to list of services

@@ -1,13 +1,15 @@
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class Service implements Serializable {
     private final String serviceName;
-    private final List<Object> serviceParameters;
+    private final Map<String, String> serviceParameters;
+    // number.getClass().getSimpleName()
     private final String returnType;
     private final String serverName;
 
-    public Service(String serviceName, List<Object> serviceParameters, String returnType, String serverName) {
+    public Service(String serviceName, Map<String, String> serviceParameters, String returnType, String serverName) {
         this.serviceName = serviceName;
         this.serviceParameters = serviceParameters;
         this.returnType = returnType;
@@ -18,7 +20,7 @@ public class Service implements Serializable {
         return serviceName;
     }
 
-    public List<Object> getServiceParameters() {
+    public Map<String, String> getServiceParameters() {
         return serviceParameters;
     }
 
