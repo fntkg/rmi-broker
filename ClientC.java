@@ -25,25 +25,29 @@ public class ClientC {
             // GET LIST OF SERVICES
             while (continueExecution) {
                 List<Service> servicesList = server.listServices();
-                int i = 0;
-                System.out.println("[+] Services list");
-                System.out.println("-----------------");
+                int i = 1;
+                System.out.println("[+] AVAILABLE SERVICES");
                 for (Service service : servicesList){
                     System.out.println(i + ". " + service.getServiceName());
                     i++;
                 }
-                System.out.println("99. Exit");
+                System.out.println("0. Exit");
                 System.out.println("-------------");
                 // SELECT A SERVICE
-                System.out.println("[+] Select a service: ");
+                System.out.println("[+] SELECT A SERVICE OR 0 TO EXIT: ");
                 String selectedService = System.console().readLine();
-                Service service = servicesList.get(Integer.parseInt(selectedService));
-                System.out.println("[+] Service selected: " + service.getServiceName());
+                Service service = servicesList.get(Integer.parseInt(selectedService)-1);
+                System.out.println("\n[+] SELECTED SERVICE: " + service.getServiceName());
 
                 // TODO Check args of the service
                 Map<String, String> params = service.getServiceParameters();
-                System.out.println("Necessary args:");
-                System.out.println(params);
+                if (!params.isEmpty()) {
+                    System.out.println("[+] THIS SERVICE NEED ARGS:");
+                    System.out.println(params);
+                    for (int j = 0; i < params.size(); i++) {
+
+                    }
+                }
 
                 // TODO Ask the user for the args
 
