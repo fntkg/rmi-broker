@@ -4,7 +4,11 @@ import java.rmi.RemoteException;
 public interface DateRetriever extends Remote {
     /**
      * @return Actual day of the week
-     * @throws RemoteException
      */
     String getDate() throws RemoteException;
+
+    /**
+     * @return Actual day of the week but with more text
+     */
+    String getCompleteDate() throws RemoteException;
 }

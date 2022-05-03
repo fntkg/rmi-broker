@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public class Service {
+public class Service implements Serializable {
     private final String serviceName;
     private final List<Object> serviceParameters;
     private final String returnType;
