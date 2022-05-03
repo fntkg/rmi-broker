@@ -29,7 +29,7 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
             Object server = Naming.lookup("//" + serverAddress + serverName); // Get the remote object
             java.lang.reflect.Method method;
             method = server.getClass().getMethod(serviceName);
-            // Transform serviceParameters to an array. Using a list for comfort
+            // Transform serviceParameters to an array. Using a list because I want comfort
             Object[] arguments = serviceParameters.toArray();
             return method.invoke(server, arguments);
         }

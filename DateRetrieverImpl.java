@@ -2,6 +2,8 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetriever {
     String[] WEEK_DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -49,13 +51,17 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             broker.registerServer("/757024DateRetriever", "127.0.0.1");
             System.out.println("[+] Server registered on broker");
             broker.registerService("/757024DateRetriever", "getDate", null, "String");
+            Map<String, String> params = new HashMap<>();
+            params.put("name", "String"); params.put("age", "int");
+            broker.registerService("/757024DateRetriever", "getDateWithArgs", params, "String");
             System.out.println("[+] Services registered on broker");
 
             // Terminate getDate and register getCompleteDate
             System.out.println("Press enter to terminate getDate() and register getCompleteDate()");
-            String selectedService = System.console().readLine();
+            System.console().readLine();
             broker.terminateService("/757024DateRetriever", "getDate");
             broker.registerService("/757024DateRetriever", "getCompleteDate", null, "String");
+            System.out.println("[+] New service registered on broker");
         }
         catch(Exception ex) {
             ex.printStackTrace();

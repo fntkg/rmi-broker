@@ -1,6 +1,7 @@
 import java.rmi.Naming;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ClientC {
     public static void main(String[] args){
@@ -38,6 +39,13 @@ public class ClientC {
                 String selectedService = System.console().readLine();
                 Service service = servicesList.get(Integer.parseInt(selectedService));
                 System.out.println("[+] Service selected: " + service.getServiceName());
+
+                // TODO Check args of the service
+                Map<String, String> params = service.getServiceParameters();
+                System.out.println("Necessary args:");
+                System.out.println(params);
+
+                // TODO Ask the user for the args
 
                 // EXECUTE SELECTED SERVICE
                 if (Integer.parseInt(selectedService) == 99) {
