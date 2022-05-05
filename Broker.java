@@ -7,7 +7,7 @@ public interface Broker extends Remote {
 
     void registerServer(String serverName, String remoteHost) throws RemoteException;
 
-    Object executeService(String serviceName, List<Object> serviceParameters) throws RemoteException;
+    Object executeService(String serviceName, List<?> serviceParameters) throws RemoteException;
 
     void registerService(String serverName, String serviceName, Map<String, String> serviceParameters, String returnType) throws RemoteException;
 

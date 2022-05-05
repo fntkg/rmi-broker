@@ -21,9 +21,8 @@ public class ClientC {
             System.out.println("[+] Connection with broker established");
 
             // Step 2: Remotely invoke server object methods
-            boolean continueExecution = true;
             // GET LIST OF SERVICES
-            while (continueExecution) {
+            while (true) {
                 List<Service> servicesList = server.listServices();
                 int i = 1;
                 System.out.println("[+] AVAILABLE SERVICES");
@@ -36,30 +35,27 @@ public class ClientC {
                 // SELECT A SERVICE
                 System.out.println("[+] SELECT A SERVICE OR 0 TO EXIT: ");
                 String selectedService = System.console().readLine();
+                if (Integer.parseInt(selectedService) == 0) {
+                    break;
+                }
                 Service service = servicesList.get(Integer.parseInt(selectedService)-1);
                 System.out.println("\n[+] SELECTED SERVICE: " + service.getServiceName());
+                List<String> arguments = new ArrayList<>();
 
-                // TODO Check args of the service
                 Map<String, String> params = service.getServiceParameters();
                 if (!params.isEmpty()) {
                     System.out.println("[+] THIS SERVICE NEED ARGS:");
                     System.out.println(params);
-                    //for (int j = 0; i < params.size(); i++) {
-
-                    //}
+                    System.out.println("\nWrite necessary args, one per line:");
+                    for (int j = 0; i < params.size(); i++) {
+                        arguments.add(System.console().readLine());
+                    }
                 }
-
-                // TODO Ask the user for the args
 
                 // EXECUTE SELECTED SERVICE
-                if (Integer.parseInt(selectedService) == 99) {
-                    continueExecution = false;
-                }
-                else {
-                    System.out.println("[+] Answer from server:");
-                    System.out.println(server.executeService(service.getServiceName(), new ArrayList<>())); // TODO Y si no se puede imprimir?
-                    System.out.println("\n");
-                }
+                System.out.println("[+] ANSWER FROM SERVER:");
+                System.out.println(server.executeService(service.getServiceName(), arguments)); // TODO Y si no se puede imprimir?
+                System.out.println("------------------------------\n");
             }
         }
         catch (Exception ex){

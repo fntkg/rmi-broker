@@ -19,7 +19,7 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
     }
 
     @Override
-    public Object executeService(String serviceName, List<Object> serviceParameters) throws RemoteException {
+    public Object executeService(String serviceName, List<?> serviceParameters) throws RemoteException {
         Service service = findByName(this.servicesList, serviceName);
         String serverName = service.getServerName();
         String serverAddress = serversMap.get(serverName);
