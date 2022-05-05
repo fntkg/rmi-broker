@@ -44,9 +44,9 @@ public class ClientC {
                 if (!params.isEmpty()) {
                     System.out.println("[+] THIS SERVICE NEED ARGS:");
                     System.out.println(params);
-                    for (int j = 0; i < params.size(); i++) {
+                    //for (int j = 0; i < params.size(); i++) {
 
-                    }
+                    //}
                 }
 
                 // TODO Ask the user for the args
