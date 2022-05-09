@@ -16,8 +16,9 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
     public void registerServer(String serverName, String remoteHost) throws RemoteException {
         // If an already existing server registers again, delete all of its previous services
         if (serversMap.containsKey(serverName)) {
-            System.out.println("Tamaño lista: " + this.servicesList.size()); // 2
-            for (Service service : this.servicesList) { // Solo coge el primero xd
+            List<Service> tempList = new ArrayList<>(this.servicesList);
+            for (Service service : tempList) {
+                System.out.println("Iterating through list:" + service.getServiceName());
                 if (Objects.equals(service.getServerName(), serverName)){
                     terminateService(serverName, service.getServiceName());
                 }
@@ -46,9 +47,6 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
                 method = server.getClass().getMethod(serviceName, serviceParameters.getClass());
                 return method.invoke(server, serviceParameters);
             }
-            // Transform serviceParameters to an array. Using a list because I want comfort
-            //Object[] arguments = serviceParameters.toArray();
-            //return method.invoke(server, serviceParameters);
         }
         catch(Exception ex) {
             ex.printStackTrace();

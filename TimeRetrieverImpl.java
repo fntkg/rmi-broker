@@ -26,7 +26,7 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
         System.setSecurityManager(new SecurityManager());
 
         // Name or IP of the host where RMI resides
-        String hostName = "127.0.0.1";
+        String hostName = "155.210.154.201";
 
         try {
             // Create remote object
@@ -39,9 +39,8 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
             // Register services
             Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
             System.out.println("[+] Connection with broker established");
-            broker.registerServer("/757024TimeRetriever", "127.0.0.1");
+            broker.registerServer("/757024TimeRetriever", "155.210.154.203");
             System.out.println("[+] Server registered on broker");
-            Thread.sleep(2000);
 
             broker.registerService("/757024TimeRetriever", "getTime", null, "String");
             Map<String, String> parameters = new HashMap<>();

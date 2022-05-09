@@ -33,7 +33,7 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
         System.setSecurityManager(new SecurityManager());
 
         // Name or IP of the host where RMI resides
-        String hostName = "127.0.0.1";
+        String hostName = "155.210.154.201";
 
         try {
             // Create remote object
@@ -46,9 +46,8 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             // Register server and services
             Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
             System.out.println("[+] Connection with broker established");
-            broker.registerServer("/757024DateRetriever", "127.0.0.1");
+            broker.registerServer("/757024DateRetriever", "155.210.154.202");
             System.out.println("[+] Server registered on broker");
-            Thread.sleep(2000); // Para dar tiempo al server a borrar los servicios anteriores
             broker.registerService("/757024DateRetriever", "getDate", null, "String");
             Map<String, String> params = new HashMap<>();
             params.put("name", "String"); params.put("age", "int");
