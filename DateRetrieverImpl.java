@@ -1,9 +1,7 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetriever {
     String[] WEEK_DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -22,8 +20,8 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
         return "Today is: " + WEEK_DAYS[c.get(Calendar.DAY_OF_WEEK)];
     }
 
-    public String getDateWithArgs(String name, int age) throws RemoteException {
-        return "Hi " + name + ", I am DateRetriever";
+    public String getDateWithArgs(ArrayList<?> arguments) throws RemoteException {
+        return "Hi " + arguments.get(0) + ", I am DateRetriever";
     }
 
     public static void main(String[] args) {
@@ -50,6 +48,7 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             System.out.println("[+] Connection with broker established");
             broker.registerServer("/757024DateRetriever", "127.0.0.1");
             System.out.println("[+] Server registered on broker");
+            Thread.sleep(2000); // Para dar tiempo al server a borrar los servicios anteriores
             broker.registerService("/757024DateRetriever", "getDate", null, "String");
             Map<String, String> params = new HashMap<>();
             params.put("name", "String"); params.put("age", "int");
@@ -60,6 +59,7 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             System.out.println("Press enter to terminate getDate() and register getCompleteDate()");
             System.console().readLine();
             broker.terminateService("/757024DateRetriever", "getDate");
+            params = new HashMap<>();
             broker.registerService("/757024DateRetriever", "getCompleteDate", null, "String");
             System.out.println("[+] New service registered on broker");
         }

@@ -40,21 +40,23 @@ public class ClientC {
                 }
                 Service service = servicesList.get(Integer.parseInt(selectedService)-1);
                 System.out.println("\n[+] SELECTED SERVICE: " + service.getServiceName());
-                List<String> arguments = new ArrayList<>();
+                List<Object> arguments = new ArrayList<>();
 
                 Map<String, String> params = service.getServiceParameters();
-                if (!params.isEmpty()) {
+                if (params != null) {
                     System.out.println("[+] THIS SERVICE NEED ARGS:");
                     System.out.println(params);
                     System.out.println("\nWrite necessary args, one per line:");
-                    for (int j = 0; i < params.size(); i++) {
+                    System.out.println(params.size());
+                    for (int j = 0; j <= params.size(); j++) {
                         arguments.add(System.console().readLine());
+                        j++;
                     }
                 }
 
                 // EXECUTE SELECTED SERVICE
                 System.out.println("[+] ANSWER FROM SERVER:");
-                System.out.println(server.executeService(service.getServiceName(), arguments)); // TODO Y si no se puede imprimir?
+                System.out.println(server.executeService(service.getServiceName(), arguments)); // What if it can not be printed?
                 System.out.println("------------------------------\n");
             }
         }

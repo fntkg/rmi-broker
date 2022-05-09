@@ -14,6 +14,16 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
 
     @Override
     public void registerServer(String serverName, String remoteHost) throws RemoteException {
+        // If an already existing server registers again, delete all of its previous services
+        if (serversMap.containsKey(serverName)) {
+            System.out.println("Tamaño lista: " + this.servicesList.size()); // 2
+            for (Service service : this.servicesList) { // Solo coge el primero xd
+                if (Objects.equals(service.getServerName(), serverName)){
+                    terminateService(serverName, service.getServiceName());
+                }
+            }
+        }
+        // Add server and its address to serversMap
         serversMap.put(serverName, remoteHost);
         System.out.println("[+] New server registered: " + serverName);
     }
@@ -28,10 +38,17 @@ public class BrokerImpl extends UnicastRemoteObject implements Broker {
         try { // https://stackoverflow.com/questions/160970/how-do-i-invoke-a-java-method-when-given-the-method-name-as-a-string
             Object server = Naming.lookup("//" + serverAddress + serverName); // Get the remote object
             java.lang.reflect.Method method;
-            method = server.getClass().getMethod(serviceName);
+            if (serviceParameters.isEmpty()) {
+                method = server.getClass().getMethod(serviceName);
+                return method.invoke(server);
+            }
+            else {
+                method = server.getClass().getMethod(serviceName, serviceParameters.getClass());
+                return method.invoke(server, serviceParameters);
+            }
             // Transform serviceParameters to an array. Using a list because I want comfort
-            Object[] arguments = serviceParameters.toArray();
-            return method.invoke(server, arguments);
+            //Object[] arguments = serviceParameters.toArray();
+            //return method.invoke(server, serviceParameters);
         }
         catch(Exception ex) {
             ex.printStackTrace();

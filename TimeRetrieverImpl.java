@@ -13,8 +13,8 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
         return String.valueOf(c.get(Calendar.HOUR_OF_DAY)) + ':' + c.get(Calendar.MINUTE);
     }
 
-    public String getTimeWithArgs(String name, int age, int weight) throws RemoteException {
-        return "Hi " + name + ", I am TimeRetriever.";
+    public String getTimeWithArgs(ArrayList<?> arguments) throws RemoteException {
+        return "Hi " + arguments.get(0) + ", I am TimeRetriever.";
     }
 
     public static void main(String[] args) {
@@ -41,11 +41,13 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
             System.out.println("[+] Connection with broker established");
             broker.registerServer("/757024TimeRetriever", "127.0.0.1");
             System.out.println("[+] Server registered on broker");
+            Thread.sleep(2000);
+
             broker.registerService("/757024TimeRetriever", "getTime", null, "String");
-            System.out.println("[+] Services registered on broker");
             Map<String, String> parameters = new HashMap<>();
             parameters.put("name", "String"); parameters.put("age", "int"); parameters.put("weight", "int");
             broker.registerService("/757024TimeRetriever", "getTimeWithArgs", parameters, "String");
+            System.out.println("[+] Services registered on broker");
         }
         catch(Exception ex) {
             ex.printStackTrace();

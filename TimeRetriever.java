@@ -1,5 +1,6 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface TimeRetriever extends Remote {
     /**
@@ -8,5 +9,5 @@ public interface TimeRetriever extends Remote {
      */
     String getTime() throws RemoteException;
 
-    String getTimeWithArgs(String name, int age, int weight) throws RemoteException;
+    String getTimeWithArgs(ArrayList<?> arguments) throws RemoteException;
 }
