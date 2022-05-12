@@ -33,20 +33,19 @@ public class TimeRetrieverImpl extends UnicastRemoteObject implements TimeRetrie
             TimeRetrieverImpl obj = new TimeRetrieverImpl();
 
             // Register remote object
-            Naming.rebind("//" + hostName + "/757024TimeRetriever", obj);
+            Naming.rebind("//" + args[0] + "/757024TimeRetriever", obj);
             System.out.println("[+] Remote object successfully registered");
 
             // Register services
             Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
             System.out.println("[+] Connection with broker established");
-            broker.registerServer("/757024TimeRetriever", "155.210.154.203");
+            broker.registerServer("/757024TimeRetriever", args[0]);
             System.out.println("[+] Server registered on broker");
 
             broker.registerService("/757024TimeRetriever", "getTime", null, "String");
             Map<String, String> parameters = new HashMap<>();
             parameters.put("name", "String"); parameters.put("age", "int"); parameters.put("weight", "int");
             broker.registerService("/757024TimeRetriever", "getTimeWithArgs", parameters, "String");
-            System.out.println("[+] Services registered on broker");
         }
         catch(Exception ex) {
             ex.printStackTrace();

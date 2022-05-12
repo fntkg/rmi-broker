@@ -40,7 +40,7 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             DateRetrieverImpl obj = new DateRetrieverImpl();
 
             // Register remote object
-            Naming.rebind("//" + hostName + "/757024DateRetriever", obj);
+            Naming.rebind("//" + "155.210.154.202" + "/757024DateRetriever", obj);
             System.out.println("[+] Remote object successfully registered");
 
             // Register server and services
@@ -58,7 +58,6 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             System.out.println("Press enter to terminate getDate() and register getCompleteDate()");
             System.console().readLine();
             broker.terminateService("/757024DateRetriever", "getDate");
-            params = new HashMap<>();
             broker.registerService("/757024DateRetriever", "getCompleteDate", null, "String");
             System.out.println("[+] New service registered on broker");
         }

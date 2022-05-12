@@ -16,7 +16,7 @@ public class ClientC {
         try {
             // Step 1: Get a reference to the server object created earlier
             // Name of the server host or its IP. This is where the remote object will be looked for.
-            String hostname = "127.0.0.1";
+            String hostname = "155.210.154.201";
             Broker server = (Broker) Naming.lookup("//" + hostname + "/757024Broker");
             System.out.println("[+] Connection with broker established");
 
