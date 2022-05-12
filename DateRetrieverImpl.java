@@ -40,14 +40,15 @@ public class DateRetrieverImpl extends UnicastRemoteObject implements DateRetrie
             DateRetrieverImpl obj = new DateRetrieverImpl();
 
             // Register remote object
-            Naming.rebind("//" + "155.210.154.202" + "/757024DateRetriever", obj);
+            Naming.rebind("//" + args[0] + "/757024DateRetriever", obj);
             System.out.println("[+] Remote object successfully registered");
 
             // Register server and services
             Broker broker = (Broker) Naming.lookup("//" + hostName + "/757024Broker");
             System.out.println("[+] Connection with broker established");
-            broker.registerServer("/757024DateRetriever", "155.210.154.202");
+            broker.registerServer("/757024DateRetriever", args[0]);
             System.out.println("[+] Server registered on broker");
+
             broker.registerService("/757024DateRetriever", "getDate", null, "String");
             Map<String, String> params = new HashMap<>();
             params.put("name", "String"); params.put("age", "int");
